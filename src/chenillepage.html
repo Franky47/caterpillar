@@ -12,11 +12,13 @@ and open the template in the editor.
         <link href="stylesChenille.css" rel="stylesheet" type="text/css"/>
         <script src="chenille.js"></script>
     </head>
-    <body onload="init()">
+    <body>
         <div id="wrapper">
         <fieldset>
             <h1>Les Chenilles</h1>
             <div>
+                <span>Nombre de Chenilles : </span>
+                <input type="text" id="numCat" name="nbChenilles" value="0" size="3" oninput="init()" /><br><br>
                 <button id="startBtn">Start</button>
                 <button id="stopBtn" disabled>Stop</button>
             </div>
