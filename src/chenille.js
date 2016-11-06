@@ -19,6 +19,10 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+function toRadian(degrees) {
+    return degrees * Math.PI / 180;
+}
+
 function Anneau(xInit, yInit, rInit) {
     this.xInit = xInit;
     this.yInit = yInit;
@@ -72,23 +76,17 @@ Tete.prototype.devierCap = function (deltaC) {
 };
 
 Tete.prototype.deplacerSelonCap = function () {
-    this.x = this.x + (this.r * Math.cos(this.cap));
-    this.y = this.y + (this.r * Math.sin(this.cap));
+    this.x = this.x + (this.r * Math.cos(toRadian(this.cap)));
+    this.y = this.y + (this.r * Math.sin(toRadian(this.cap)));
 };
-
-// qui retourne un booléen dont la valeur est vraie (true) si le cap actuel
-// de la tête est tel que le prochain déplacement maintiendra la tête entièrement
-// dans le canvas et faux (false) sinon. Plus précisément, cette méthode vérifie
-// que le point (x',y') défini par x' = x + R * cos(cap) et y' = y + R * sin(cap)
-// est à une distance >= R de chacun des bords du canvas.
 
 Tete.prototype.capOK = function (canvas) {
     var xmin=0+this.r;
     var xmax=canvas.width-this.r;
     var ymin=0+this.r;
     var ymax=canvas.height-this.r;
-    var newx=this.x + (this.r * Math.cos(this.cap));
-    var newy=this.y + (this.r * Math.sin(this.cap));
+    var newx=this.x + (this.r * Math.cos(toRadian(this.cap)));
+    var newy=this.y + (this.r * Math.sin(toRadian(this.cap)));
     if (newx>=xmin && newx<=xmax && newy>=ymin && newy<=ymax){
         return true;
     }else{
@@ -104,13 +102,12 @@ function Chenille(canvas, nbAnneaux, r) {
     this.corps = null;
 };
 Chenille.prototype.init = function() {
-    var ctxt = this.canvas.getContext("2d");
     this.head = new Tete(this.canvas.width / 2, this.canvas.height/2, this.r, 0);
     this.corps=[];
     for (var i = 0; i < this.nbAnneaux; i++) {
         this.corps.push(new Anneau((this.canvas.width/2)-(i+1)*this.r, this.canvas.height/2, this.r));
     };
-}
+};
 
 Chenille.prototype.dessiner = function () {
     var ctxt = this.canvas.getContext("2d");
@@ -146,11 +143,14 @@ function init() {
     var canvas = document.getElementById("myCanvas");
     var ctxt = canvas.getContext("2d");
 
-    // create the worms
-
-    var bug1 = new Chenille(canvas, 10,10);
-    bug1.init();
-    bug1.dessiner();
+    // create the caterpillars
+    var nbChenilles = document.getElementById("numCat").value;
+    var allCaterpillars = [];
+    for (var i = 0; i < nbChenilles; i++){
+        allCaterpillars.push(new Chenille(canvas, 10,10));
+        allCaterpillars[i].init();
+        allCaterpillars[i].dessiner();
+    }
 
 
     // association au bouton Start d'un traitement qui lance l'animation
@@ -163,8 +163,10 @@ function init() {
         timerId = setInterval( function() {
             // la fonction invoquée périodiquement (toutes les 20 ms) par le timer
             ctxt.clearRect(0, 0, canvas.width, canvas.height);
-            bug1.deplacer();
-            bug1.dessiner();
+            for (var i = 0; i < nbChenilles; i++){
+                allCaterpillars[i].deplacer();
+                allCaterpillars[i].dessiner();
+            }
         }, 20);
     };
 
