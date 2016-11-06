@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Chenille</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="stylesChenille.css" rel="stylesheet" type="text/css"/>
+        <script src="chenille.js"></script>
+    </head>
+    <body onload="init()">
+        <div id="wrapper">
+        <fieldset>
+            <h1>Les Chenilles</h1>
+            <div>
+                <button id="startBtn">Start</button>
+                <button id="stopBtn" disabled>Stop</button>
+            </div>
+        </fieldset>
+        <canvas  id="myCanvas" width="500" height ="500">
+            la zone de dessin, si ce message s'affiche c'est que
+            votre navigateur ne supporte pas la balise canvas de HTML5...
+            il serait temps de changer de version !
+        </canvas>
+        </div>
+    </body>
+</html>
